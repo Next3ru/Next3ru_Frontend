@@ -36,8 +36,8 @@ const SeatMapImg = () => {
               id="imgExample" // zoomToElement에서 사용할 ID
               src="/images/elisa/seatmap.png"
               alt="seatmap"
-              width={500}
-              height={500}
+              width={400}
+              height={400}
             />
           </TransformComponent>
           <div className="tools h-full pt-2 pr-2 gap-1 flex flex-col justify-start items-center">
