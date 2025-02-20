@@ -8,7 +8,6 @@ import {
   PerspectiveCamera,
   Center,
 } from "@react-three/drei";
-import Floor from "./Floor";
 import { SkeletonModel } from "./SkeletonModel";
 import { CenterModel } from "./CenterModel";
 import { Cheering1RuModel } from "./Cheering1RuModel";
@@ -28,39 +27,28 @@ import { TvingTableModel } from "./TvingTableModel";
 import { YBoxModel } from "./YBoxModel";
 import SeatInfoModal from "./SeatInfoModal";
 
-export type TClickedMeshInfo = {
-  area_name: string;
-  zone: string | null;
-};
+export interface IClickedMeshInfo {
+  area_name: any;
+  zone: any;
+}
 
-export default function StadiumModel({
-  hides,
-}: {
-  hides: { [key: string]: boolean };
-}) {
+export default function StadiumModel({ hides }: any) {
   const cameraRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  const [clickedMeshInfo, setClickedMeshInfo] = useState<
-    TClickedMeshInfo | undefined
-  >();
-  const [hoveredMeshInfo, setHoveredMeshInfo] = useState<
-    TClickedMeshInfo | undefined
-  >();
+  const [clickedMeshInfo, setClickedMeshInfo] = useState<IClickedMeshInfo>();
+  const [hoveredMeshInfo, setHoveredMeshInfo] = useState<IClickedMeshInfo>();
 
-  const handleMeshClick = (info: TClickedMeshInfo) => {
+  const handleMeshClick = (info: IClickedMeshInfo) => {
     setShowModal(true);
     setClickedMeshInfo(info); // 클릭된 메쉬의 정보를 상태에 저장
   };
 
-  const handleMeshHover = (info: TClickedMeshInfo) => {
+  const handleMeshHover = (info: IClickedMeshInfo) => {
     setHoveredMeshInfo(info); // 호버된 메쉬의 정보를 상태에 저장
   };
 
   return (
-    <div
-      id="stadium"
-      className="h-full"
-    >
+    <>
       <Canvas className="rounded-lg">
         <Center>
           <SkeletonModel
@@ -76,14 +64,14 @@ export default function StadiumModel({
             handleMeshClick={handleMeshClick}
           />
           <Cheering1RuModel
-            areaName="1루 응원지정석"
+            areaName="응원지정석(1루)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
             handleMeshClick={handleMeshClick}
           />
           <Cheering3RuModel
-            areaName="3루 응원지정석"
+            areaName="응원지정석(3루)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
@@ -118,28 +106,28 @@ export default function StadiumModel({
             handleMeshClick={handleMeshClick}
           />
           <Grass1RuModel
-            areaName="외야잔디/자유석"
+            areaName="외야잔디(자유석)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
             handleMeshClick={handleMeshClick}
           />
           <Grass3RuModel
-            areaName="외야잔디/자유석"
+            areaName="외야잔디(자유석)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
             handleMeshClick={handleMeshClick}
           />
           <Kidsland4thModel
-            areaName="키즈랜드 캠핑존"
+            areaName="키즈랜드존"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
             handleMeshClick={handleMeshClick}
           />
           <Kidsland5thModel
-            areaName="키즈랜드 캠핑존"
+            areaName="키즈랜드존"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
@@ -153,14 +141,14 @@ export default function StadiumModel({
             handleMeshClick={handleMeshClick}
           />
           <Sky1RuModel
-            areaName="1루 스카이존"
+            areaName="스카이존(1루)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
             handleMeshClick={handleMeshClick}
           />
           <Sky3RuModel
-            areaName="3루 스카이존"
+            areaName="스카이존(3루)"
             hides={hides}
             showModal={showModal}
             handleMeshHover={handleMeshHover}
@@ -190,25 +178,23 @@ export default function StadiumModel({
           background={false}
           preset="city"
         />
-        <CameraControls
-          makeDefault
-          // enableZoom={true}
-        />
+        <CameraControls makeDefault />
         <PerspectiveCamera
           ref={cameraRef}
           makeDefault={true}
           far={1000000}
           near={0.5}
           fov={13}
-          position={[120, 0, -100]}
+          position={[6000, 4000, 4000]}
         />
       </Canvas>
       {showModal && (
         <SeatInfoModal
           setShowModal={setShowModal} // 에러 해결: https://velog.io/@keynene/ErrorTypeScript-TS2322-Type-DispatchSetStateActionboolean-is-not-assignable-to-type-boolean.-setState%EB%8A%94-boolean%ED%83%80%EC%9E%85%EC%9D%B4-%EC%95%84%EB%8B%98-ReactTypeScript%EC%97%90%EC%84%9C-setState-props-%EC%A0%84%EB%8B%AC%ED%95%98%EA%B8%B0
-          info={clickedMeshInfo}
+          areaName={clickedMeshInfo?.area_name}
+          zone={clickedMeshInfo?.zone}
         />
       )}
-    </div>
+    </>
   );
 }
